@@ -1,4 +1,4 @@
-````markdown
+
 <h1 align="center">🔊🤖 AI Contact-Verification Agent<br>for Contractors & Real-Estate Pros</h1>
 
 <p align="center">
