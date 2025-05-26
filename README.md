@@ -1,141 +1,187 @@
+# AI Agent System for Contractors and Real Estate Agents
 
-<h1 align="center">🔊🤖 AI Contact-Verification Agent<br>for Contractors & Real-Estate Pros</h1>
+This project implements an AI-powered system that helps contractors and real estate agents verify phone calls and manage contact information automatically. The system uses voice recognition, AI verification, and Google Sheets integration to streamline the contact management process.
 
-<p align="center">
-  <img alt="Python" src="https://img.shields.io/badge/Python-3.8%2B-blue?logo=python">
-  <img alt="Twilio"  src="https://img.shields.io/badge/Twilio-voice%20&%20sms-ff3533?logo=twilio">
-  <img alt="OpenAI"  src="https://img.shields.io/badge/OpenAI-GPT-powered-25c47e?logo=openai">
-  <img alt="License" src="https://img.shields.io/badge/License-MIT-lightgrey">
-</p>
+## Features
 
-> **One call, zero friction:**  
-> This agent picks up the phone, verifies the caller with AI-powered voice recognition, captures their details, and logs everything straight to Google Sheets—no manual data entry, no missed leads.
+- **Phone Call Verification**
+  - AI-powered voice recognition
+  - Automated identity verification
+  - Multi-step verification process
+  - Retry mechanism for failed verifications
 
----
+- **Contact Information Management**
+  - Automatic collection of:
+    - Name
+    - Email
+    - Phone Number
+    - Address
+  - Google Sheets integration
+  - Real-time data updates
+  - Contact history tracking
 
-## ✨ Key Features
+- **AI Integration**
+  - OpenAI-powered verification analysis
+  - Confidence scoring
+  - Fraud detection
+  - Natural language processing
 
-| Area | Highlights |
-|------|------------|
-| **📞 Phone Verification** | • AI speech-to-text & text-to-speech<br>• Multi-step identity checks<br>• Auto-retry on failure |
-| **📇 Contact Capture** | • Name, email, phone, address grabbed in call<br>• Instant write-back to Google Sheets<br>• Full contact-history timeline |
-| **🤖 AI Intelligence** | • GPT-analysis for confidence scoring<br>• Fraud / spam detection<br>• Natural-language dialog in multiple languages |
-| **🎙️ Voice Interface** | • Customizable voice & speed<br>• Human-like pauses and confirmations<br>• Supports multilingual callers |
-| **🔒 Security** | • Env-based secrets, no hard-coding<br>• Encrypted traffic end-to-end<br>• Rate-limiting & input sanitization |
+- **Voice Interface**
+  - Text-to-speech capabilities
+  - Speech recognition
+  - Customizable voice settings
+  - Multi-language support
 
----
+## Prerequisites
 
-## 🗺️  Table of Contents
-1. [Prerequisites](#-prerequisites)    
-2. [Quick Start](#-quick-start)    
-3. [Configuration](#-configuration)    
-4. [Project Structure](#-project-structure)    
-5. [Usage](#-usage)    
-6. [Error Handling](#-error-handling)    
-7. [Security & Compliance](#-security--compliance)    
-8. [Contributing](#-contributing)    
-9. [License](#-license)
+- Python 3.8 or higher
+- Twilio account and phone number
+- OpenAI API key
+- Google Cloud account with Sheets API enabled
+- Google Sheets document
 
----
+## Installation
 
-## 🛠️  Prerequisites
-* **Python 3.8+**  
-* **Twilio** voice-enabled phone number  
-* **OpenAI** API key  
-* **Google Cloud** project with **Sheets API** enabled  
-
----
-
-## 🚀 Quick Start
-
+1. Clone the repository:
 ```bash
-# 1  Clone the repo
-git clone https://github.com/<your-org>/real-estate-ai-agent.git
-cd real-estate-ai-agent
+git clone <repository-url>
+cd real-state-ai-agent
+```
 
-# 2  Install deps
+2. Install the required dependencies:
+```bash
 pip install -r requirements.txt
+```
 
-# 3  Add secrets
-cp .env.example .env   # then paste your keys & IDs
+3. Set up environment variables:
+Create a `.env` file in the root directory with the following variables:
+```
+# Twilio Configuration
+TWILIO_ACCOUNT_SID=your_twilio_account_sid
+TWILIO_AUTH_TOKEN=your_twilio_auth_token
+TWILIO_PHONE_NUMBER=your_twilio_phone_number
 
-# 4  Run the agent
-python run.py
-````
+# OpenAI Configuration
+OPENAI_API_KEY=your_openai_api_key
 
-The server boots on **`http://localhost:5000`** and Twilio webhooks will hit `/voice`.
+# Google Sheets Configuration
+GOOGLE_CREDENTIALS_FILE=credentials.json
+SPREADSHEET_ID=your_google_sheet_id
 
----
+# Application Configuration
+PORT=5000
+```
 
-## ⚙️  Configuration (`.env`)
+4. Set up Google Sheets API:
+   - Go to [Google Cloud Console](https://console.cloud.google.com)
+   - Create a new project
+   - Enable Google Sheets API
+   - Create credentials (OAuth 2.0 Client ID)
+   - Download the credentials JSON file
+   - Save it as `credentials.json` in the project root directory
 
-| Key                       | Description                      |
-| ------------------------- | -------------------------------- |
-| `TWILIO_ACCOUNT_SID`      | Your Twilio Account SID          |
-| `TWILIO_AUTH_TOKEN`       | Twilio Auth Token                |
-| `TWILIO_PHONE_NUMBER`     | Incoming call number             |
-| `OPENAI_API_KEY`          | GPT access key                   |
-| `GOOGLE_CREDENTIALS_FILE` | Service-account JSON             |
-| `SPREADSHEET_ID`          | Target Google Sheet              |
-| `PORT`                    | Local server port (default 5000) |
+5. Set up Twilio:
+   - Create a [Twilio account](https://www.twilio.com)
+   - Get your Account SID and Auth Token
+   - Set up a phone number for the AI agent
+   - Update the `.env` file with your Twilio credentials
 
----
+6. Get OpenAI API key:
+   - Go to [OpenAI Platform](https://platform.openai.com)
+   - Create an account or sign in
+   - Generate an API key
+   - Update the `.env` file with your OpenAI API key
 
-## 🗂️  Project Structure
+## Project Structure
 
 ```
-real-estate-ai-agent/
+real-state-ai-agent/
 ├── src/
-│   ├── agents/            # Business logic per role
-│   ├── utils/             # Sheets, voice, verification helpers
-│   └── main.py            # Flask / FastAPI endpoints
-├── config/                # Central settings
-├── run.py                 # Entrypoint
-└── requirements.txt
+│   ├── agents/
+│   │   ├── __init__.py
+│   │   ├── contractor_agent.py
+│   │   └── real_estate_agent.py
+│   ├── utils/
+│   │   ├── __init__.py
+│   │   ├── voice_handler.py
+│   │   ├── google_sheets.py
+│   │   └── verification.py
+│   └── main.py
+├── config/
+│   └── config.py
+├── requirements.txt
+├── run.py
+└── README.md
 ```
 
----
+## Usage
 
-## ▶️  Usage
-
-1. **Incoming calls** hit `/voice` → agent greets and starts verification.
-2. Answers are analysed by GPT; on success, contact data is pushed to Google Sheets in real time.
-3. **Outbound calls** can be triggered with a simple POST to `/call`.
-4. Query all verified contacts at `/contacts`.
-
----
-
-## 🧰 Error Handling
-
-* Auto-retry up to **3 times** if caller fails a step.
-* Graceful fallbacks for Twilio / OpenAI / Sheets outages.
-* Structured logs for every call & API request.
-
----
-
-## 🔐 Security & Compliance
-
-* Secrets live only in environment variables.
-* All HTTP traffic served over **TLS** in production.
-* Input sanitization prevents prompt & SQL injection.
-* GDPR-ready: easy data export / deletion on request.
-
----
-
-## 🤝 Contributing
-
-1. **Fork** → `git switch -c feature/my-feature`
-2. **Commit** with [Conventional Commits](https://www.conventionalcommits.org).
-3. **Push** & open a Pull Request—CI will run tests automatically.
-
----
-
-## 📝 License
-
-Released under the **MIT License** – see [`LICENSE`](LICENSE) for full text.
-
----
-
-> **Need help or a custom feature?**  Open an issue or drop us a line—let’s build something amazing together! 🚀
-
+1. Start the application:
+```bash
+python run.py
 ```
+
+2. The system will:
+   - Listen for incoming calls on the configured Twilio number
+   - Verify caller identity using AI
+   - Collect and store contact information
+   - Update Google Sheets automatically
+
+3. API Endpoints:
+   - `/voice` (POST): Handle incoming voice calls
+   - `/contacts` (GET): Get all verified contacts
+   - `/call` (POST): Make outbound calls
+
+## Configuration
+
+### Voice Settings
+- Language: English (US)
+- Gender: Female
+- Speed: 1.0x
+
+### Verification Settings
+- Maximum retries: 3
+- Call timeout: 300 seconds (5 minutes)
+- Verification questions:
+  1. Full name confirmation
+  2. Email address
+  3. Phone number
+  4. Current address
+
+### Google Sheets
+- Automatic column headers
+- Timestamp tracking
+- Verification status
+- Agent type tracking
+
+## Error Handling
+
+The system includes comprehensive error handling:
+- Graceful handling of missing credentials
+- Automatic retries for failed verifications
+- Detailed error logging
+- Fallback mechanisms for service failures
+
+## Security
+
+- All sensitive data is stored securely
+- API keys and credentials are managed through environment variables
+- Data transmission is encrypted
+- Input validation and sanitization
+- Rate limiting and request validation
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## License
+
+MIT License
+
+## Support
+
+For support, please open an issue in the repository or contact the maintainers. 
